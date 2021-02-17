@@ -1,8 +1,13 @@
 var gridBoxes = document.querySelectorAll('.grid-box')
-// var turncounter = 0
+var turnCounter = 0
 
 function handleUserSelection(event) {
-    event.currentTarget.textContent = "x"
+    if (turnCounter % 2 === 0) {
+        event.currentTarget.textContent = 'x'
+    } else {
+        event.currentTarget.textContent = 'o'
+    }
+    turnCounter++
 } 
 
 for (var i=0; i<gridBoxes.length; i++) {
