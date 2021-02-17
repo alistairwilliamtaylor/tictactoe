@@ -1,10 +1,14 @@
 var gridBoxes = document.querySelectorAll('.grid-box');
-// var squareRoot = Math.sqrt(gridBoxes.length);
-var xWinningPossibilities = new Array(8).fill(0)
+
+var xWinningPossibilities = new Array(8).fill(0);
 // these are [0-horizontal1, 1-horizontal2, 2-horizontal3, 3-vertical1, 4-vertical2, 5-vertical3, 6-diagonal1, 7-diagonal2]
-var oWinningPossibilities = new Array(8).fill(0)
+var oWinningPossibilities = new Array(8).fill(0);
 var turnCounter = 0;
-var filledBoxes = 0;
+
+var invincibleBtn = document.querySelector('.invincible')
+var twoPlayerBtn = document.querySelector('.two-player')
+var gameMode = 'twoPlayer';
+
 
 function handleUserSelection(event) {
     if (event.currentTarget.textContent === '') {
@@ -129,3 +133,17 @@ function checkForDraw() {
 for (var i=0; i<gridBoxes.length; i++) {
     gridBoxes[i].addEventListener('click', handleUserSelection)
 }
+
+function handleTwoPlayerMode() {
+    gameMode = 'twoPlayer';
+    xWinningPossibilities = new Array(8).fill(0);
+    oWinningPossibilities = new Array(8).fill(0);
+    turnCounter = 0;
+    gridBoxes.forEach(function (box){
+        box.textContent = ''
+    })
+}
+
+// invincibleBtn.addEventListener('click', handleInvincibleMode)
+
+twoPlayerBtn.addEventListener('click', handleTwoPlayerMode)
