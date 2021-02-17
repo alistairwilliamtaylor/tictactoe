@@ -1,65 +1,127 @@
-var gridBoxes = document.querySelectorAll('.grid-box')
-
-var box1 = document.querySelector('.one')
-var box2 = document.querySelector('.two')
-var box3 = document.querySelector('.three')
-var box4 = document.querySelector('.four')
-var box5 = document.querySelector('.five')
-var box6 = document.querySelector('.six')
-var box7 = document.querySelector('.seven')
-var box8 = document.querySelector('.eight')
-var box9 = document.querySelector('.nine')
-
-var turnCounter = 0
-var filledBoxes = 0
-
+var gridBoxes = document.querySelectorAll('.grid-box');
+// var squareRoot = Math.sqrt(gridBoxes.length);
+var xWinningPossibilities = new Array(8).fill(0)
+// these are [0-horizontal1, 1-horizontal2, 2-horizontal3, 3-vertical1, 4-vertical2, 5-vertical3, 6-diagonal1, 7-diagonal2]
+var oWinningPossibilities = new Array(8).fill(0)
+var turnCounter = 0;
+var filledBoxes = 0;
 
 function handleUserSelection(event) {
     if (event.currentTarget.textContent === '') {
         if (turnCounter % 2 === 0) {
             event.currentTarget.textContent = 'x'
-        } else {
+            if (event.currentTarget === gridBoxes[0]) {
+                xWinningPossibilities[0]++
+                xWinningPossibilities[3]++
+                xWinningPossibilities[6]++
+            }
+            else if (event.currentTarget === gridBoxes[1]) {
+                xWinningPossibilities[0]++
+                xWinningPossibilities[4]++
+            }
+            else if (event.currentTarget === gridBoxes[2]) {
+                xWinningPossibilities[0]++
+                xWinningPossibilities[5]++
+                xWinningPossibilities[7]++
+            }
+            else if (event.currentTarget === gridBoxes[3]) {
+                xWinningPossibilities[1]++
+                xWinningPossibilities[3]++
+            }
+            else if (event.currentTarget === gridBoxes[4]) {
+                xWinningPossibilities[1]++
+                xWinningPossibilities[4]++
+                xWinningPossibilities[6]++
+                xWinningPossibilities[7]++
+            }
+            else if (event.currentTarget === gridBoxes[5]) {
+                xWinningPossibilities[1]++
+                xWinningPossibilities[5]++
+            }
+            else if (event.currentTarget === gridBoxes[6]) {
+                xWinningPossibilities[2]++
+                xWinningPossibilities[3]++
+                xWinningPossibilities[7]++
+            }
+            else if (event.currentTarget === gridBoxes[7]) {
+                xWinningPossibilities[2]++
+                xWinningPossibilities[4]++
+            }
+            else {
+                xWinningPossibilities[2]++
+                xWinningPossibilities[5]++
+                xWinningPossibilities[6]++
+            }
+        } 
+        else {
             event.currentTarget.textContent = 'o'
+            if (event.currentTarget === gridBoxes[0]) {
+                oWinningPossibilities[0]++
+                oWinningPossibilities[3]++
+                oWinningPossibilities[6]++
+            }
+            else if (event.currentTarget === gridBoxes[1]) {
+                oWinningPossibilities[0]++
+                oWinningPossibilities[4]++
+            }
+            else if (event.currentTarget === gridBoxes[2]) {
+                oWinningPossibilities[0]++
+                oWinningPossibilities[5]++
+                oWinningPossibilities[7]++
+            }
+            else if (event.currentTarget === gridBoxes[3]) {
+                oWinningPossibilities[1]++
+                oWinningPossibilities[3]++
+            }
+            else if (event.currentTarget === gridBoxes[4]) {
+                oWinningPossibilities[1]++
+                oWinningPossibilities[4]++
+                oWinningPossibilities[6]++
+                oWinningPossibilities[7]++
+            }
+            else if (event.currentTarget === gridBoxes[5]) {
+                oWinningPossibilities[1]++
+                oWinningPossibilities[5]++
+            }
+            else if (event.currentTarget === gridBoxes[6]) {
+                oWinningPossibilities[2]++
+                oWinningPossibilities[3]++
+                oWinningPossibilities[7]++
+            }
+            else if (event.currentTarget === gridBoxes[7]) {
+                oWinningPossibilities[2]++
+                oWinningPossibilities[4]++
+            }
+            else {
+                oWinningPossibilities[2]++
+                oWinningPossibilities[5]++
+                oWinningPossibilities[6]++
+            }
         }
         turnCounter++
-        checkForResult()
+        if (checkForWin() != "result!") {
+            checkForDraw()
+        }
     }
 } 
 
-function checkForResult() {
-    filledBoxes = 0
-    if (box1.textContent+box2.textContent+box3.textContent === 'xxx' || box1.textContent+box2.textContent+box3.textContent === 'ooo') {
-        alert(`${box1.textContent} wins!`)
-    } 
-    else if (box4.textContent+box5.textContent+box6.textContent === 'xxx' || box4.textContent+box5.textContent+box6.textContent === 'ooo') {
-        alert(`${box4.textContent} wins!`)
-    } 
-    else if (box7.textContent+box8.textContent+box9.textContent === 'xxx' || box7.textContent+box8.textContent+box9.textContent === 'ooo') {
-        alert(`${box7.textContent} wins!`)
+function checkForWin() {
+    for (i=0; i<xWinningPossibilities.length; i++){
+        if (xWinningPossibilities[i] === 3) {
+            alert('x wins!')
+            return 'result!'
+        }
     }
-    else if (box1.textContent+box4.textContent+box7.textContent === 'xxx' || box1.textContent+box4.textContent+box7.textContent === 'ooo') {
-        alert(`${box1.textContent} wins!`)
+    for (i=0; i<oWinningPossibilities.length; i++){
+        if (oWinningPossibilities[i] === 3) {
+            alert('o wins!')
+            return 'result!'
+        }
     }
-    else if (box2.textContent+box5.textContent+box8.textContent === 'xxx' || box2.textContent+box5.textContent+box8.textContent === 'ooo') {
-        alert(`${box2.textContent} wins!`)
-    }
-    else if (box3.textContent+box6.textContent+box9.textContent === 'xxx' || box3.textContent+box6.textContent+box9.textContent === 'ooo') {
-        alert(`${box3.textContent} wins!`)
-    }
-    else if (box1.textContent+box5.textContent+box9.textContent === 'xxx' || box1.textContent+box5.textContent+box9.textContent === 'ooo') {
-        alert(`${box1.textContent} wins!`)
-    }
-    else if (box3.textContent+box5.textContent+box7.textContent === 'xxx' || box3.textContent+box5.textContent+box7.textContent === 'ooo') {
-        alert(`${box3.textContent} wins!`)
-    }
-    gridBoxes.forEach(checkForDraw)
 }
 
-function checkForDraw(box) {
-    if (box.textContent === 'x' || box.textContent === 'o') {
-    filledBoxes++
-    }
-    if (filledBoxes === gridBoxes.length) {
+function checkForDraw() {
+    if (xWinningPossibilities[0]+xWinningPossibilities[1]+xWinningPossibilities[2]+oWinningPossibilities[0]+oWinningPossibilities[1]+oWinningPossibilities[2] === 9) {
         alert("it's a draw!")
     }
 }
