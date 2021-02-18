@@ -12,6 +12,7 @@ var gamePaused = false;
 var gameModeDisplay = document.querySelector('.game-mode')
 gameModeDisplay.textContent = gameMode;
 var winner = document.querySelector('.winner')
+var winsText = document.querySelector('.wins-text')
 
 
 var invincibleBtn = document.querySelector('.invincible')
@@ -117,17 +118,20 @@ function handleUserSelection(event) {
         if (checkForWin() != "result!") {
             turnCounter++
             checkForDraw()
-            gamePaused = true
-            setTimeout(function() {
-                gamePaused = false
-                if (gameMode === 'pathetic') {
+            if (gameMode === 'easy') {
+                gamePaused = true
+                setTimeout(function() {
+                    gamePaused = false
                     patheticBotMoves();
-                }
-                if (gameMode === 'difficult') {
+                }, 500);
+            }
+            if (gameMode === 'difficult') {
+                gamePaused = true
+                setTimeout(function() {
+                    gamePaused = false
                     invincibleBotMoves();
-                }
-            }, 500);
-            
+                }, 500);
+            }    
         }
     }
 } 
@@ -650,8 +654,12 @@ function checkForWin() {
 
 function checkForDraw() {
     if (turnCounter === 9) {
-        alert("it's a draw!")
-    }
+        setTimeout(function() {
+            winner.textContent = '-';
+            winsText.textContent = 'draw';
+            gamePlayBox.style.display = 'none';
+            endGameBox.style.display = 'block';
+        }, 1000);    }
 }
 
 for (var i=0; i<gridBoxes.length; i++) {
@@ -669,7 +677,7 @@ function handleInvincibleMode() {
 }
 
 function handlePatheticMode() {
-    gameMode = 'pathetic';
+    gameMode = 'easy';
     resetGame();
 }
 
