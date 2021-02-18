@@ -1,16 +1,22 @@
 var gridBoxes = document.querySelectorAll('.grid-box');
+var gamePlayBox = document.querySelector('.gameplay')
+var endGameBox = document.querySelector('.endgame')
 
 var xWinningPossibilities = new Array(8).fill(0);
 // these are [[0]-horizontal1, [1]-horizontal2, [2]-horizontal3, [3]-vertical1, [4]-vertical2, [5]-vertical3, [6]-diagonal1, [7]-diagonal2]
 var oWinningPossibilities = new Array(8).fill(0);
 var turnCounter = 0;
 var gameMode = 'two-player';
+
 var gameModeDisplay = document.querySelector('.game-mode')
 gameModeDisplay.textContent = gameMode;
+var winner = document.querySelector('.winner')
+
 
 var invincibleBtn = document.querySelector('.invincible')
 var twoPlayerBtn = document.querySelector('.two-player')
 var patheticBtn = document.querySelector('.pathetic')
+var playAgainBtn = document.querySelector('.play-again')
 
 
 function handleUserSelection(event) {
@@ -602,13 +608,24 @@ function invincibleTowardsDraw() {
 function checkForWin() {
     for (var i=0; i<xWinningPossibilities.length; i++){
         if (xWinningPossibilities[i] === 3) {
-            alert('x wins!')
+            for (var i=0; i<gridBoxes.length; i++) {
+                if (gridBoxes[i].textContent === 'x') {
+                    gridBoxes[i].style.color = 'green';
+                }
+            }
+            setTimeout(function() {
+                winner.textContent = 'x';
+                gamePlayBox.style.display = 'none';
+                endGameBox.style.display = 'block';
+            }, 1000);
             return 'result!'
         }
     }
     for (var i=0; i<oWinningPossibilities.length; i++){
         if (oWinningPossibilities[i] === 3) {
-            alert('o wins!')
+            winner.textContent = 'o';
+            gamePlayBox.style.display = 'none';
+            endGameBox.style.display = 'block';
             return 'result!'
         }
     }
@@ -649,6 +666,16 @@ function resetGame() {
     gameModeDisplay.textContent = gameMode
 }
 
+function handlePlayAgain() {
+    resetGame();
+    for (var i=0; i<gridBoxes.length; i++) {
+        gridBoxes[i].style.color = 'black';
+    }
+    endGameBox.style.display = 'none';
+    gamePlayBox.style.display = 'block';
+}
+
 patheticBtn.addEventListener('click', handlePatheticMode)
 invincibleBtn.addEventListener('click', handleInvincibleMode)
 twoPlayerBtn.addEventListener('click', handleTwoPlayerMode)
+playAgainBtn.addEventListener('click', handlePlayAgain)
