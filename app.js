@@ -4,11 +4,13 @@ var xWinningPossibilities = new Array(8).fill(0);
 // these are [[0]-horizontal1, [1]-horizontal2, [2]-horizontal3, [3]-vertical1, [4]-vertical2, [5]-vertical3, [6]-diagonal1, [7]-diagonal2]
 var oWinningPossibilities = new Array(8).fill(0);
 var turnCounter = 0;
+var gameMode = 'two-player';
+var gameModeDisplay = document.querySelector('.game-mode')
+gameModeDisplay.textContent = gameMode;
 
 var invincibleBtn = document.querySelector('.invincible')
 var twoPlayerBtn = document.querySelector('.two-player')
 var patheticBtn = document.querySelector('.pathetic')
-var gameMode = 'invincible';
 
 
 function handleUserSelection(event) {
@@ -109,7 +111,7 @@ function handleUserSelection(event) {
             if (gameMode === 'pathetic') {
                 patheticBotMoves();
             }
-            if (gameMode === 'invincible') {
+            if (gameMode === 'difficult') {
                 invincibleBotMoves();
             }
         }
@@ -623,12 +625,12 @@ for (var i=0; i<gridBoxes.length; i++) {
 }
 
 function handleTwoPlayerMode() {
-    gameMode = 'twoPlayer';
+    gameMode = 'two-player';
     resetGame();
 }
 
 function handleInvincibleMode() {
-    gameMode = 'invincible';
+    gameMode = 'difficult';
     resetGame();
 }
 
@@ -644,6 +646,7 @@ function resetGame() {
     gridBoxes.forEach(function (box){
         box.textContent = ''
     })
+    gameModeDisplay.textContent = gameMode
 }
 
 patheticBtn.addEventListener('click', handlePatheticMode)
