@@ -7,7 +7,8 @@ var turnCounter = 0;
 
 var invincibleBtn = document.querySelector('.invincible')
 var twoPlayerBtn = document.querySelector('.two-player')
-var gameMode = 'twoPlayer';
+var patheticBtn = document.querySelector('.pathetic')
+var gameMode = 'pathetic';
 
 
 function handleUserSelection(event) {
@@ -105,9 +106,64 @@ function handleUserSelection(event) {
         turnCounter++
         if (checkForWin() != "result!") {
             checkForDraw()
+            if (gameMode === 'pathetic') {
+                patheticBotMoves();
+            }
+            
         }
     }
 } 
+
+function patheticBotMoves() {
+    if (gridBoxes[1].textContent === '') {
+        gridBoxes[1].textContent = 'o'
+        oWinningPossibilities[0]++
+        oWinningPossibilities[4]++
+    }
+    else if (gridBoxes[7].textContent === '') {
+        gridBoxes[7].textContent = 'o'
+        oWinningPossibilities[2]++
+        oWinningPossibilities[4]++
+    }
+    else if (gridBoxes[5].textContent === '') {
+        gridBoxes[5].textContent = 'o'
+        oWinningPossibilities[1]++
+        oWinningPossibilities[5]++
+    }
+    else if (gridBoxes[3].textContent === '') {
+        gridBoxes[3].textContent = 'o'
+        oWinningPossibilities[1]++
+        oWinningPossibilities[3]++
+    }
+    else if (gridBoxes[0].textContent === '') {
+        gridBoxes[0].textContent = 'o'
+        oWinningPossibilities[0]++
+        oWinningPossibilities[3]++
+        oWinningPossibilities[6]++
+
+    }
+    else if (gridBoxes[8].textContent === '') {
+        gridBoxes[8].textContent = 'o'
+        oWinningPossibilities[2]++
+        oWinningPossibilities[5]++
+        oWinningPossibilities[6]++
+    }
+    else if (gridBoxes[2].textContent === '') {
+        gridBoxes[2].textContent = 'o'
+        oWinningPossibilities[0]++
+        oWinningPossibilities[5]++
+        oWinningPossibilities[7]++
+    }
+    else if (gridBoxes[6].textContent === '') {
+        gridBoxes[6].textContent = 'o'
+        oWinningPossibilities[2]++
+        oWinningPossibilities[3]++
+        oWinningPossibilities[7]++
+    }
+    turnCounter++;
+    checkForWin();
+}
+
 
 function checkForWin() {
     for (i=0; i<xWinningPossibilities.length; i++){
@@ -125,7 +181,7 @@ function checkForWin() {
 }
 
 function checkForDraw() {
-    if (xWinningPossibilities[0]+xWinningPossibilities[1]+xWinningPossibilities[2]+oWinningPossibilities[0]+oWinningPossibilities[1]+oWinningPossibilities[2] === 9) {
+    if (turnCounter === 9) {
         alert("it's a draw!")
     }
 }
@@ -136,6 +192,20 @@ for (var i=0; i<gridBoxes.length; i++) {
 
 function handleTwoPlayerMode() {
     gameMode = 'twoPlayer';
+    resetGame();
+}
+
+function handleInvincibleMode() {
+    gameMode = 'invincible';
+    resetGame();
+}
+
+function handlePatheticMode() {
+    gameMode = 'pathetic';
+    resetGame();
+}
+
+function resetGame() {
     xWinningPossibilities = new Array(8).fill(0);
     oWinningPossibilities = new Array(8).fill(0);
     turnCounter = 0;
@@ -144,6 +214,6 @@ function handleTwoPlayerMode() {
     })
 }
 
-// invincibleBtn.addEventListener('click', handleInvincibleMode)
-
+patheticBtn.addEventListener('click', handlePatheticMode)
+invincibleBtn.addEventListener('click', handleInvincibleMode)
 twoPlayerBtn.addEventListener('click', handleTwoPlayerMode)
