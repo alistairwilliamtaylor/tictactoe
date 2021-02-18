@@ -7,6 +7,7 @@ var xWinningPossibilities = new Array(8).fill(0);
 var oWinningPossibilities = new Array(8).fill(0);
 var turnCounter = 0;
 var gameMode = 'two-player';
+var gameEnded = false;
 
 var gameModeDisplay = document.querySelector('.game-mode')
 gameModeDisplay.textContent = gameMode;
@@ -20,7 +21,9 @@ var playAgainBtn = document.querySelector('.play-again')
 
 
 function handleUserSelection(event) {
-    if (event.currentTarget.textContent === '') {
+    if (gameEnded) {
+    }
+    else if (event.currentTarget.textContent === '') {
         if (turnCounter % 2 === 0) {
             event.currentTarget.textContent = 'x'
             if (event.currentTarget === gridBoxes[0]) {
@@ -608,6 +611,7 @@ function invincibleTowardsDraw() {
 function checkForWin() {
     for (var i=0; i<xWinningPossibilities.length; i++){
         if (xWinningPossibilities[i] === 3) {
+            gameEnded = true;
             for (var i=0; i<gridBoxes.length; i++) {
                 if (gridBoxes[i].textContent === 'x') {
                     gridBoxes[i].style.color = 'green';
@@ -623,9 +627,17 @@ function checkForWin() {
     }
     for (var i=0; i<oWinningPossibilities.length; i++){
         if (oWinningPossibilities[i] === 3) {
-            winner.textContent = 'o';
-            gamePlayBox.style.display = 'none';
-            endGameBox.style.display = 'block';
+            gameEnded = true;
+            for (var i=0; i<gridBoxes.length; i++) {
+                if (gridBoxes[i].textContent === 'o') {
+                    gridBoxes[i].style.color = 'green';
+                }
+            }
+            setTimeout(function() {
+                winner.textContent = 'o';
+                gamePlayBox.style.display = 'none';
+                endGameBox.style.display = 'block';
+            }, 1000);
             return 'result!'
         }
     }
@@ -673,6 +685,7 @@ function handlePlayAgain() {
     }
     endGameBox.style.display = 'none';
     gamePlayBox.style.display = 'block';
+    gameEnded = false;
 }
 
 patheticBtn.addEventListener('click', handlePatheticMode)
