@@ -7,7 +7,7 @@ var xWinningPossibilities = new Array(8).fill(0);
 var oWinningPossibilities = new Array(8).fill(0);
 var turnCounter = 0;
 var gameMode = 'two-player';
-var gameEnded = false;
+var gamePaused = false;
 
 var gameModeDisplay = document.querySelector('.game-mode')
 gameModeDisplay.textContent = gameMode;
@@ -21,7 +21,7 @@ var playAgainBtn = document.querySelector('.play-again')
 
 
 function handleUserSelection(event) {
-    if (gameEnded) {
+    if (gamePaused) {
     }
     else if (event.currentTarget.textContent === '') {
         if (turnCounter % 2 === 0) {
@@ -117,12 +117,17 @@ function handleUserSelection(event) {
         if (checkForWin() != "result!") {
             turnCounter++
             checkForDraw()
-            if (gameMode === 'pathetic') {
-                patheticBotMoves();
-            }
-            if (gameMode === 'difficult') {
-                invincibleBotMoves();
-            }
+            gamePaused = true
+            setTimeout(function() {
+                gamePaused = false
+                if (gameMode === 'pathetic') {
+                    patheticBotMoves();
+                }
+                if (gameMode === 'difficult') {
+                    invincibleBotMoves();
+                }
+            }, 500);
+            
         }
     }
 } 
@@ -611,7 +616,7 @@ function invincibleTowardsDraw() {
 function checkForWin() {
     for (var i=0; i<xWinningPossibilities.length; i++){
         if (xWinningPossibilities[i] === 3) {
-            gameEnded = true;
+            gamePaused = true;
             for (var i=0; i<gridBoxes.length; i++) {
                 if (gridBoxes[i].textContent === 'x') {
                     gridBoxes[i].style.color = 'green';
@@ -627,7 +632,7 @@ function checkForWin() {
     }
     for (var i=0; i<oWinningPossibilities.length; i++){
         if (oWinningPossibilities[i] === 3) {
-            gameEnded = true;
+            gamePaused = true;
             for (var i=0; i<gridBoxes.length; i++) {
                 if (gridBoxes[i].textContent === 'o') {
                     gridBoxes[i].style.color = 'green';
@@ -685,7 +690,7 @@ function handlePlayAgain() {
     }
     endGameBox.style.display = 'none';
     gamePlayBox.style.display = 'block';
-    gameEnded = false;
+    gamePaused = false;
 }
 
 patheticBtn.addEventListener('click', handlePatheticMode)
