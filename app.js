@@ -1,14 +1,14 @@
 var gridBoxes = document.querySelectorAll('.grid-box');
 
 var xWinningPossibilities = new Array(8).fill(0);
-// these are [0-horizontal1, 1-horizontal2, 2-horizontal3, 3-vertical1, 4-vertical2, 5-vertical3, 6-diagonal1, 7-diagonal2]
+// these are [[0]-horizontal1, [1]-horizontal2, [2]-horizontal3, [3]-vertical1, [4]-vertical2, [5]-vertical3, [6]-diagonal1, [7]-diagonal2]
 var oWinningPossibilities = new Array(8).fill(0);
 var turnCounter = 0;
 
 var invincibleBtn = document.querySelector('.invincible')
 var twoPlayerBtn = document.querySelector('.two-player')
 var patheticBtn = document.querySelector('.pathetic')
-var gameMode = 'pathetic';
+var gameMode = 'invincible';
 
 
 function handleUserSelection(event) {
@@ -103,13 +103,15 @@ function handleUserSelection(event) {
                 oWinningPossibilities[6]++
             }
         }
-        turnCounter++
         if (checkForWin() != "result!") {
+            turnCounter++
             checkForDraw()
             if (gameMode === 'pathetic') {
                 patheticBotMoves();
             }
-            
+            if (gameMode === 'invincible') {
+                invincibleBotMoves();
+            }
         }
     }
 } 
@@ -160,19 +162,449 @@ function patheticBotMoves() {
         oWinningPossibilities[3]++
         oWinningPossibilities[7]++
     }
-    turnCounter++;
     checkForWin();
+    turnCounter++;
 }
 
+function invincibleBotMoves() {
+    if (turnCounter === 1) {
+        invincibleFirstMove()
+    } else if (invincibleWinGame()) {
+    } else if (invincibleBlockX()) {
+    } else if (turnCounter === 3) {
+        invincibleSecondMove()
+    } else {invincibleTowardsDraw()
+    }   
+    checkForWin();
+    turnCounter++;
+}
+
+function invincibleFirstMove() {
+    var xMoveIndicator = 0
+    xWinningPossibilities.forEach(function (winoptions) {
+        xMoveIndicator = xMoveIndicator + winoptions
+    })
+    if (xMoveIndicator === 3 || xMoveIndicator === 2) {
+        gridBoxes[4].textContent = 'o'
+        oWinningPossibilities[1]++
+        oWinningPossibilities[4]++
+        oWinningPossibilities[6]++
+        oWinningPossibilities[7]++
+        }
+    else {
+        gridBoxes[0].textContent = 'o'
+        oWinningPossibilities[0]++
+        oWinningPossibilities[3]++
+        oWinningPossibilities[6]++
+    }
+}
+
+function invincibleSecondMove() {
+    var xMoveIndicator = 0
+    xWinningPossibilities.forEach(function (winoptions) {
+        xMoveIndicator = xMoveIndicator + winoptions
+    })
+    if (xMoveIndicator === 6 && gridBoxes[4].textContent === 'o') {
+        gridBoxes[1].textContent = 'o'
+        oWinningPossibilities[0]++
+        oWinningPossibilities[4]++ 
+    } else {
+        invincibleTowardsDraw()
+    }
+}
+
+function invincibleWinGame() {
+    if (oWinningPossibilities[0] === 2 && xWinningPossibilities[0] === 0) {
+        if (gridBoxes[0].textContent === '') {
+            gridBoxes[0].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[6]++
+        }
+        else if (gridBoxes[1].textContent === '') {
+            gridBoxes[1].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[4]++
+        }
+        else {
+            gridBoxes[2].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[7]++
+        }
+    return true
+    }
+    else if (oWinningPossibilities[1] === 2 && xWinningPossibilities[1] === 0) {
+        if (gridBoxes[3].textContent === '') {
+            gridBoxes[3].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[3]++
+        }
+        else if (gridBoxes[4].textContent === '') {
+            gridBoxes[4].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[4]++
+            oWinningPossibilities[6]++
+            oWinningPossibilities[7]++
+        }
+        else {
+            gridBoxes[5].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[5]++
+        }
+    return true
+    }
+    else if (oWinningPossibilities[2] === 2 && xWinningPossibilities[2] === 0) {
+        if (gridBoxes[6].textContent === '') {
+            gridBoxes[6].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[7]++
+        }
+        else if (gridBoxes[7].textContent === '') {
+            gridBoxes[7].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[4]++
+        }
+        else {
+            gridBoxes[8].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[6]++
+        }
+    return true
+    }
+    else if (oWinningPossibilities[3] === 2 && xWinningPossibilities[3] === 0) {
+        if (gridBoxes[0].textContent === '') {
+            gridBoxes[0].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[6]++
+        }
+        else if (gridBoxes[3].textContent === '') {
+            gridBoxes[3].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[3]++
+        }
+        else {
+            gridBoxes[6].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[7]++
+        }
+    return true
+    }
+    else if (oWinningPossibilities[4] === 2 && xWinningPossibilities[4] === 0) {
+        if (gridBoxes[1].textContent === '') {
+            gridBoxes[1].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[4]++
+        }
+        else if (gridBoxes[4].textContent === '') {
+            gridBoxes[4].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[4]++
+            oWinningPossibilities[6]++
+            oWinningPossibilities[7]++
+        }
+        else {
+            gridBoxes[7].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[4]++
+        }
+    return true
+    }
+    else if (oWinningPossibilities[5] === 2 && xWinningPossibilities[5] === 0) {
+        if (gridBoxes[2].textContent === '') {
+            gridBoxes[2].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[7]++
+        }
+        else if (gridBoxes[5].textContent === '') {
+            gridBoxes[5].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[5]++
+        }
+        else {
+            gridBoxes[8].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[6]++
+        }
+    return true
+    }
+    else if (oWinningPossibilities[6] === 2 && xWinningPossibilities[6] === 0) {
+        if (gridBoxes[0].textContent === '') {
+            gridBoxes[0].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[6]++
+        }
+        else if (gridBoxes[4].textContent === '') {
+            gridBoxes[4].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[4]++
+            oWinningPossibilities[6]++
+            oWinningPossibilities[7]++
+        }
+        else {
+            gridBoxes[8].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[6]++
+        }
+    return true
+    }
+    else if (oWinningPossibilities[7] === 2 && xWinningPossibilities[7] === 0) {
+        if (gridBoxes[2].textContent === '') {
+            gridBoxes[2].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[7]++
+        }
+        else if (gridBoxes[4].textContent === '') {
+            gridBoxes[4].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[4]++
+            oWinningPossibilities[6]++
+            oWinningPossibilities[7]++
+        }
+        else {
+            gridBoxes[6].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[7]++
+        }
+    return true
+    }
+}
+
+function invincibleBlockX() {
+    if (xWinningPossibilities[0] === 2 && oWinningPossibilities[0] === 0) {
+        if (gridBoxes[0].textContent === '') {
+            gridBoxes[0].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[6]++
+        }
+        else if (gridBoxes[1].textContent === '') {
+            gridBoxes[1].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[4]++
+        }
+        else {
+            gridBoxes[2].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[7]++
+        }
+    return true
+    }
+    else if (xWinningPossibilities[1] === 2 && oWinningPossibilities[1] === 0) {
+        if (gridBoxes[3].textContent === '') {
+            gridBoxes[3].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[3]++
+        }
+        else if (gridBoxes[4].textContent === '') {
+            gridBoxes[4].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[4]++
+            oWinningPossibilities[6]++
+            oWinningPossibilities[7]++
+        }
+        else {
+            gridBoxes[5].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[5]++
+        }
+    return true
+    }
+    else if (xWinningPossibilities[2] === 2 && oWinningPossibilities[2] === 0) {
+        if (gridBoxes[6].textContent === '') {
+            gridBoxes[6].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[7]++
+        }
+        else if (gridBoxes[7].textContent === '') {
+            gridBoxes[7].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[4]++
+        }
+        else {
+            gridBoxes[8].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[6]++
+        }
+    return true
+    }
+    else if (xWinningPossibilities[3] === 2 && oWinningPossibilities[3] === 0) {
+        if (gridBoxes[0].textContent === '') {
+            gridBoxes[0].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[6]++
+        }
+        else if (gridBoxes[3].textContent === '') {
+            gridBoxes[3].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[3]++
+        }
+        else {
+            gridBoxes[6].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[7]++
+        }
+    return true
+    }
+    else if (xWinningPossibilities[4] === 2 && oWinningPossibilities[4] === 0) {
+        if (gridBoxes[1].textContent === '') {
+            gridBoxes[1].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[4]++
+        }
+        else if (gridBoxes[4].textContent === '') {
+            gridBoxes[4].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[4]++
+            oWinningPossibilities[6]++
+            oWinningPossibilities[7]++
+        }
+        else {
+            gridBoxes[7].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[4]++
+        }
+    return true
+    }
+    else if (xWinningPossibilities[5] === 2 && oWinningPossibilities[5] === 0) {
+        if (gridBoxes[2].textContent === '') {
+            gridBoxes[2].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[7]++
+        }
+        else if (gridBoxes[5].textContent === '') {
+            gridBoxes[5].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[5]++
+        }
+        else {
+            gridBoxes[8].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[6]++
+        }
+    return true
+    }
+     else if (xWinningPossibilities[6] === 2 && oWinningPossibilities[6] === 0) {
+        if (gridBoxes[0].textContent === '') {
+            gridBoxes[0].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[6]++
+        }
+        else if (gridBoxes[4].textContent === '') {
+            gridBoxes[4].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[4]++
+            oWinningPossibilities[6]++
+            oWinningPossibilities[7]++
+        }
+        else {
+            gridBoxes[8].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[6]++
+        }
+    return true
+    }
+     else if (xWinningPossibilities[7] === 2 && oWinningPossibilities[7] === 0) {
+        if (gridBoxes[2].textContent === '') {
+            gridBoxes[2].textContent = 'o'
+            oWinningPossibilities[0]++
+            oWinningPossibilities[5]++
+            oWinningPossibilities[7]++
+        }
+        else if (gridBoxes[4].textContent === '') {
+            gridBoxes[4].textContent = 'o'
+            oWinningPossibilities[1]++
+            oWinningPossibilities[4]++
+            oWinningPossibilities[6]++
+            oWinningPossibilities[7]++
+        }
+        else {
+            gridBoxes[6].textContent = 'o'
+            oWinningPossibilities[2]++
+            oWinningPossibilities[3]++
+            oWinningPossibilities[7]++
+        }
+    return true
+    }
+}
+
+function invincibleTowardsDraw() {
+    if (gridBoxes[1].textContent === '') {
+        gridBoxes[1].textContent = 'o'
+        oWinningPossibilities[0]++
+        oWinningPossibilities[4]++
+    }
+    else if (gridBoxes[2].textContent === '') {
+        gridBoxes[2].textContent = 'o'
+        oWinningPossibilities[0]++
+        oWinningPossibilities[5]++
+        oWinningPossibilities[7]++
+    }
+    else if (gridBoxes[3].textContent === '') {
+        gridBoxes[3].textContent = 'o'
+        oWinningPossibilities[1]++
+        oWinningPossibilities[3]++
+    }
+    else if (gridBoxes[4].textContent === '') {
+        gridBoxes[4].textContent = 'o'
+        oWinningPossibilities[1]++
+        oWinningPossibilities[4]++
+        oWinningPossibilities[6]++
+        oWinningPossibilities[7]++
+    }
+    else if (gridBoxes[5].textContent === '') {
+        gridBoxes[5].textContent = 'o'
+        oWinningPossibilities[1]++
+        oWinningPossibilities[5]++
+    }
+    else if (gridBoxes[6].textContent === '') {
+        gridBoxes[6].textContent = 'o'
+        oWinningPossibilities[2]++
+        oWinningPossibilities[3]++
+        oWinningPossibilities[7]++
+    }
+    else if (gridBoxes[7].textContent === '') {
+        gridBoxes[7].textContent = 'o'
+        oWinningPossibilities[2]++
+        oWinningPossibilities[4]++
+    }
+    else if (gridBoxes[8].textContent === '') {
+        gridBoxes[8].textContent = 'o'
+        oWinningPossibilities[2]++
+        oWinningPossibilities[5]++
+        oWinningPossibilities[6]++
+    }
+    
+    
+}
 
 function checkForWin() {
-    for (i=0; i<xWinningPossibilities.length; i++){
+    for (var i=0; i<xWinningPossibilities.length; i++){
         if (xWinningPossibilities[i] === 3) {
             alert('x wins!')
             return 'result!'
         }
     }
-    for (i=0; i<oWinningPossibilities.length; i++){
+    for (var i=0; i<oWinningPossibilities.length; i++){
         if (oWinningPossibilities[i] === 3) {
             alert('o wins!')
             return 'result!'
