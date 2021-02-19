@@ -628,6 +628,7 @@ function checkForWin() {
             }
             setTimeout(function() {
                 winner.textContent = 'x';
+                winsText.textContent = 'wins';
                 gamePlayBox.style.display = 'none';
                 endGameBox.style.display = 'block';
             }, 1000);
@@ -644,6 +645,7 @@ function checkForWin() {
             }
             setTimeout(function() {
                 winner.textContent = 'o';
+                winsText.textContent = 'wins';
                 gamePlayBox.style.display = 'none';
                 endGameBox.style.display = 'block';
             }, 1000);
