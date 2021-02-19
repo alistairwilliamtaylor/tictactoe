@@ -19,7 +19,9 @@ The look and feel of playing against a computer bot were improved dramatically b
 The user interface is composed of two separate, minimal screens: a gameplay screen, and an endgame screen. These javascript code toggles between these screens, when appropriate, by accessing the DOM and changing the CSS 'display: hide' style.  A time delay was also added at the end of the game so that the user can see the symbols of the winning player in green, but not interact any further with the gameboard, before then moving to the endgame screen. Previously, upon the achievement of a result the interface switched immediately to the endgame screen, leaving the user with no time to actually see the lay of the board when the game was won, lost, or drawn.
 
 ## Future Code Improvements
-and array the mapping wasn't so easy. This would make the code a lot more readable and much easier to work with, The javascript code for this project at this point contains an enormous amount of repetition, mostly with regard to calculating the consequences of every move. 
+The code relies heavily on two 8-item arrays, one for each player, which keeps track of their progress (0-3) towards each of the 8 ways of potentially winning. The mapping of these 8 possibilities onto the array is explained in a comment, but in retrospect it would have been a lot more clear to use an object in this case, with the key clearly stating the e.g. 'first horizontal row', 'third vertical column' etc. This would make the code a lot more readable and much easier to work with throughout the program, as it currently requires the programmer to keep the meaning of the respective array items in their head. 
+
+, The javascript code for this project at this point contains a large amount of repetition, mostly with regard to calculating the consequences of every move. 
 
 Improving this would which would then allow for additional features to be generated much more easily in the future. These potentially include:
 
