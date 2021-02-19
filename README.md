@@ -1,6 +1,7 @@
 # Tic-Tac-Toe
 
-images?
+![Easy Mode](/images/easywin.png)
+![X Wins](/images/xwins.png)
 
 ## Introduction
 This project builds on the General Assembly task of creating a browser-based tic-tac-toe game for two user players. The most significant addition is the creation of computer bots for the user to play against. The CSS is clean and minimal, and makes use of the round 'o' and simple 'x' of the font 'Varela Round' to fill out a basic CSS grid. My initial intention was to create an invincible bot, and a bot so good at being bad that it couldn't possibly win. At this point I have created a very 'difficult' bot which is nevertheless beatable with a little ingenuity, and a really easy bot that can, however, be forced to win once you figure out the very simple algorithm guiding its moves.
